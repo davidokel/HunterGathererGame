@@ -24,6 +24,7 @@ public class TerrainChunk {
 	bool hasSetCollider;
 	float maxViewDst;
 
+	BiomeMapSettings biomeMapSettings;
 	HeightMapSettings heightMapSettings;
 	MeshSettings meshSettings;
 	Transform viewer;
@@ -64,8 +65,12 @@ public class TerrainChunk {
 
 	}
 
-	public void Load() {
-		ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, sampleCentre), OnHeightMapReceived);
+	public void Load(bool useBiomes) {
+		if (useBiomes) {
+			ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, sampleCentre, biomeMapSettings), OnHeightMapReceived);
+		} else {
+			ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, sampleCentre), OnHeightMapReceived);
+		}
 	}
 
 
