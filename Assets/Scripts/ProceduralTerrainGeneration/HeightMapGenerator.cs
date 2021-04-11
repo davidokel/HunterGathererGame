@@ -99,7 +99,7 @@ public struct HeightMap {
 		this.biomeMap = biomeMap;
 	}
 
-	public HeightMap(float[,] values, float minValue, float maxValue) : this()
+	public HeightMap(float[,] values, float minValue, float maxValue)
 	{
 		this.values = values;
 		this.minValue = minValue;
