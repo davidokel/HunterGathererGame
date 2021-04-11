@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using ProceduralTerrainGeneration;
 using UnityEngine;
 
 public static class HeightMapGenerator {
