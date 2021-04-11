@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ProceduralTerrainGeneration;
+using UnityEngine;
 
 public class TerrainChunk {
 	

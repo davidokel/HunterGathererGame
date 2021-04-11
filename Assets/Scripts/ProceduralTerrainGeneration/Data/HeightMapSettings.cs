@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using ProceduralTerrainGeneration;
 
 [CreateAssetMenu()]
 public class HeightMapSettings : UpdatableData {

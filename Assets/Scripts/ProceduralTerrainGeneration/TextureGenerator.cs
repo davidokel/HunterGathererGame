@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using ProceduralTerrainGeneration;
 
 public static class TextureGenerator {
 
