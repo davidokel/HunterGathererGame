@@ -65,7 +65,8 @@ public class TerrainChunk {
 
 	}
 
-	public void Load(bool useBiomes) {
+	public void Load(bool useBiomes, BiomeMapSettings biomeMapSettings) {
+		this.biomeMapSettings = biomeMapSettings;
 		if (useBiomes) {
 			ThreadedDataRequester.RequestData(() => HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, sampleCentre, biomeMapSettings), OnHeightMapReceived);
 		} else {
