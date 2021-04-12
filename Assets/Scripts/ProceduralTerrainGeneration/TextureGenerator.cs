@@ -28,6 +28,21 @@ public static class TextureGenerator {
 		return TextureFromColourMap(colourMap,width,height);
 	}
 	
+	public static Texture2D TextureFromBiomeHeightMult(BiomeMap biomeMap) {
+		int width = biomeMap.biomeMapIndexes.GetLength (0);
+		int height = biomeMap.biomeMapIndexes.GetLength (1);
+		
+		Color[] colourMap = new Color[width * height];
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				float val = biomeMap.heightMultMat [x, y];
+				colourMap [y * width + x] = new Color(val/biomeMap.numBiomes,val/biomeMap.numBiomes,val/biomeMap.numBiomes);
+			}
+		}
+
+		return TextureFromColourMap(colourMap,width,height);
+	}
+	
 	public static Texture2D TextureFromHeightMap(HeightMap heightMap) {
 		int width = heightMap.values.GetLength (0);
 		int height = heightMap.values.GetLength (1);

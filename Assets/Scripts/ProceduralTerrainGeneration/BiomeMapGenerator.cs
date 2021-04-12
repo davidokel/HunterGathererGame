@@ -23,7 +23,7 @@ public static class BiomeMapGenerator {
 		}
 
 		
-		for (int x = 1; x < width; x++)
+		/*for (int x = 1; x < width; x++)
 		{
 			for (int y = 1; y < height; y++)
 			{
@@ -40,10 +40,10 @@ public static class BiomeMapGenerator {
 						}
 					}
 			}
-		}
+		}*/
 		
 		float[,] heightMult =
-			MatrixConvolution (map, GaussianBlurKernel (settings.smoothingRadius, settings.smoothingWeight), edgeCoords);
+			MatrixConvolution (map, GaussianBlurKernel (settings.smoothingRadius, settings.smoothingWeight), settings);
 
 
 		return new BiomeMap (map, settings.Biomes.Length, edgeCoords, heightMult);
@@ -71,30 +71,27 @@ public static class BiomeMapGenerator {
 		return kernel;
 	}
 
-	public static float[,] MatrixConvolution(int[,] values, float[,] kernel, int[,] selectedCoords) {
+	public static float[,] MatrixConvolution(int[,] values, float[,] kernel, BiomeMapSettings settings) {
 		int size = values.GetLength (0);
 		int kernelMidPoint = kernel.GetLength (0) / 2 - 1;
 		float[,] output = new float[size, size];
 
 		for (int x = 0; x < size; x++) {
 			for (int y = 0; y < size; y++) {
-				if (selectedCoords [x, y] != 0) {
-					float accumulator = 0;
+				float accumulator = 0;
 
-					for (int i = -kernelMidPoint; i < kernelMidPoint; i++) {
-						for (int j = -kernelMidPoint; j < kernelMidPoint; j++) {
-							try {
-								accumulator += kernel [kernelMidPoint + i, kernelMidPoint + j] * values [x + i, y + j];
-							}
-							catch (Exception e) {
-								Console.WriteLine (e);
-							}
+				for (int i = -kernelMidPoint; i < kernelMidPoint; i++) {
+					for (int j = -kernelMidPoint; j < kernelMidPoint; j++) {
+						try {
+							accumulator += kernel [kernelMidPoint + i, kernelMidPoint + j] * settings.Biomes[values [x + i, y + j]].heightMult;
 						}
+						catch (Exception e) {
+							Console.WriteLine (e);
+						} //TODO Change edge handling to extend boundaries of map
 					}
-					output [x, y] = accumulator;
-				} else {
-					output [x, y] = values [x, y];
 				}
+				output [x, y] = accumulator;
+			
 			}
 		}
 		return output;

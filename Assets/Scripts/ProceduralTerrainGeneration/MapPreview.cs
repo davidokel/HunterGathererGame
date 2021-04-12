@@ -9,7 +9,7 @@ public class MapPreview : MonoBehaviour {
 	public MeshRenderer meshRenderer;
 
 
-	public enum DrawMode {NoiseMap, Mesh, FalloffMap, Biomes, BiomeMesh};
+	public enum DrawMode {NoiseMap, Mesh, FalloffMap, Biomes, BiomeMesh, BiomeMapHeightMult};
 	public DrawMode drawMode;
 
 	public MeshSettings meshSettings;
@@ -44,6 +44,8 @@ public class MapPreview : MonoBehaviour {
 			DrawTexture(TextureGenerator.TextureFromBiomeMap(biomeMap));
 		} else if (drawMode == DrawMode.BiomeMesh) {
 			DrawMesh(MeshGenerator.GenerateTerrainMesh(biomeHeightMap.values,meshSettings,editorPreviewLOD));
+		} else if (drawMode == DrawMode.BiomeMapHeightMult) {
+			DrawTexture(TextureGenerator.TextureFromBiomeHeightMult(biomeMap));
 		}
 	}
 
