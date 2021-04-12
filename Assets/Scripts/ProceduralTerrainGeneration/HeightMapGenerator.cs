@@ -43,7 +43,7 @@ namespace ProceduralTerrainGeneration
 			for (int i = 0; i < width; i++) {
 				for (int j = 0; j < height; j++) {
 					int biomeIndex = biomeMap.biomeMapIndexes [i, j];
-					float biomeScalar = GetSmoothedMean(biomeMap, biomeMapSettings, new Vector2(i, j)); 
+					float biomeScalar = GetSmoothedMean(biomeMap, biomeMapSettings, new Vector2(i, j)); //REMOVE THIS AND CHANGE SMOOTHED MEAN TO TAKE IN ENTIRE HEIGHTMAP VALUES AND SMOOTH EDGE COORDS
 					values [i, j] *= heightCurve_threadsafe.Evaluate (values [i, j]) * settings.heightMultiplier * biomeScalar;
 					values [i, j] *= biomeCurves_threadsafe[biomeIndex].Evaluate (values [i, j]);
 					if (values [i, j] > maxValue) {

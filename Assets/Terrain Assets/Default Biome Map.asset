@@ -21,16 +21,16 @@ MonoBehaviour:
     lacunarity: 1.86
     seed: 434
     offset: {x: 0, y: 0}
-  smoothingRadius: 4
+  smoothingRadius: 10
   Biomes:
-  - startValue: 0.34
-    heightMult: 2.7
+  - startValue: 0.33
+    heightMult: 2.85
     heightCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0
+        time: -0.004165394
+        value: 0.20518638
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -38,13 +38,22 @@ MonoBehaviour:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 0.66179526
-        value: 0.42295432
-        inSlope: 2.58687
-        outSlope: 2.58687
+        time: 0.3369733
+        value: 0.33333325
+        inSlope: 0.7075298
+        outSlope: 0.7075298
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.068191156
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 0.60344565
+        value: 0.5668752
+        inSlope: 1.5897658
+        outSlope: 1.5897658
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.17889826
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 1
