@@ -45,7 +45,9 @@ public static class BiomeMapGenerator {
 		float[,] heightMult =
 			MatrixConvolution (map, GaussianBlurKernel (settings.smoothingRadius, settings.smoothingWeight), settings);
 
-
+	//TODO: generate biomemap in size + smoothing radius
+	//TODO: Change gaussian blur to box blur
+	//TODO change blur to HLSL
 		return new BiomeMap (map, settings.Biomes.Length, edgeCoords, heightMult);
 	}
 
