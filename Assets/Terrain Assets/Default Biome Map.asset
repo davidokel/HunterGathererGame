@@ -19,12 +19,12 @@ MonoBehaviour:
     octaves: 6
     persistance: 0.054
     lacunarity: 1.86
-    seed: 434
+    seed: 391
     offset: {x: 0, y: 0}
-  smoothingRadius: 10
+  smoothingRadius: 3
   Biomes:
   - startValue: 0.33
-    heightMult: 2.85
+    heightMult: 2.08
     heightCurve:
       serializedVersion: 2
       m_Curve:
