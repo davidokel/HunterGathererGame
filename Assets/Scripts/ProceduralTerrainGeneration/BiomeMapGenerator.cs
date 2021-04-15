@@ -6,13 +6,13 @@ using UnityEngine;
 
 public static class BiomeMapGenerator {
 	public static BiomeMap GenerateBiomeMap(int width, int height, BiomeMapSettings settings, Vector2 sampleCentre) {
-		float[,] values = Noise.GenerateNoiseMap (width, height, settings.noiseSettings, sampleCentre);
-		int[,] map = new int[width, height];
-		int[,] edgeCoords = new int[width, height];
+		int offset = settings.smoothingRadius * 2;
+		float[,] values = Noise.GenerateNoiseMap (width + offset, height + offset, settings.noiseSettings, sampleCentre);
+		int[,] map = new int[width + offset, height + offset];
 
 
-		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width + offset; x++) {
+			for (int y = 0; y < height + offset; y++) {
 				for (int biomeIndex = 0; biomeIndex < settings.Biomes.Length; biomeIndex++) {
 					if (values [x, y] <= settings.Biomes [biomeIndex].startValue) {
 						map [x, y] = biomeIndex;
@@ -21,79 +21,67 @@ public static class BiomeMapGenerator {
 				}
 			}
 		}
-
 		
-		/*for (int x = 1; x < width; x++)
-		{
-			for (int y = 1; y < height; y++)
-			{
-				if (map[x, y] != map[x - 1, y - 1])
-					for (int i = -settings.smoothingRadius; i < settings.smoothingRadius; i++)
-					{
-						try
-						{
-							edgeCoords[x + i, y + i] = 1;
-						}
-						catch (Exception e)
-						{
-							Debug.unityLogger.Log(e);
-						}
-					}
-			}
-		}*/
-		
-		float[,] heightMult =
-			MatrixConvolution (map, GaussianBlurKernel (settings.smoothingRadius, settings.smoothingWeight), settings);
-
-	//TODO: generate biomemap in size + smoothing radius
-	//TODO: Change gaussian blur to box blur
-	//TODO change blur to HLSL
-		return new BiomeMap (map, settings.Biomes.Length, edgeCoords, heightMult);
+		float[,] heightMult = removeOffset (BlurHeightMultipliers (settings, map), settings.smoothingRadius);
+		map = removeOffset (map, settings.smoothingRadius);
+		//TODO change blur to HLSL
+		return new BiomeMap (map, settings.Biomes.Length, heightMult);
 	}
+	
+	public static float[,] BlurHeightMultipliers(BiomeMapSettings settings, int[,] indexes) {
+		
+		int blurSize = settings.smoothingRadius;
+		int gridSize = indexes.GetLength (0);
+		
+		int kernelSize = blurSize * 2 + 1;
+		int kernelExtents = (kernelSize - 1) / 2;
+		
+		float[,] penaltiesHorizontalPass = new float[gridSize,gridSize];
+		float[,] penaltiesVerticalPass = new float[gridSize,gridSize];
+		float[,] values = new float[gridSize, gridSize];
+		
+		for (int y = 0; y < gridSize; y++) {
+			for (int x = -kernelExtents; x <= kernelExtents; x++) {
+				int sampleX = Mathf.Clamp (x, 0, kernelExtents);
+				penaltiesHorizontalPass [0, y] += settings.Biomes[indexes[sampleX, y]].heightMult;
+			}
 
+			for (int x = 1; x < gridSize; x++) {
+				int removeIndex = Mathf.Clamp(x - kernelExtents - 1, 0, gridSize);
+				int addIndex = Mathf.Clamp(x + kernelExtents, 0, gridSize-1);
 
-	public static float[,] GaussianBlurKernel(int length, float weight) {
-		float[,] kernel = new float[length, length];
-		float kernelSum = 0;
-		int foff = (length - 1) / 2;
-		float distance = 0;
-		float constant = 1f / (2 * (float)Math.PI * weight * weight);
-		for (int y = -foff; y <= foff; y++) {
-			for (int x = -foff; x <= foff; x++) {
-				distance = ((y * y) + (x * x)) / (2 * weight * weight);
-				kernel [y + foff, x + foff] = constant * (float)Math.Exp (-distance);
-				kernelSum += kernel [y + foff, x + foff];
+				penaltiesHorizontalPass [x, y] = penaltiesHorizontalPass [x - 1, y] - settings.Biomes[indexes[removeIndex, y]].heightMult + settings.Biomes[indexes[addIndex, y]].heightMult;
 			}
 		}
-		for (int y = 0; y < length; y++) {
-			for (int x = 0; x < length; x++) {
-				kernel [y, x] = kernel [y, x] / kernelSum;
-			}
-		}
-		return kernel;
-	}
-
-	public static float[,] MatrixConvolution(int[,] values, float[,] kernel, BiomeMapSettings settings) {
-		int size = values.GetLength (0);
-		int kernelMidPoint = kernel.GetLength (0) / 2 - 1;
-		float[,] output = new float[size, size];
-
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++) {
-				float accumulator = 0;
-
-				for (int i = -kernelMidPoint; i < kernelMidPoint; i++) {
-					for (int j = -kernelMidPoint; j < kernelMidPoint; j++) {
-						try {
-							accumulator += kernel [kernelMidPoint + i, kernelMidPoint + j] * settings.Biomes[values [x + i, y + j]].heightMult;
-						}
-						catch (Exception e) {
-							Console.WriteLine (e);
-						} //TODO Change edge handling to extend boundaries of map
-					}
-				}
-				output [x, y] = accumulator;
 			
+		for (int x = 0; x < gridSize; x++) {
+			for (int y = -kernelExtents; y <= kernelExtents; y++) {
+				int sampleY = Mathf.Clamp (y, 0, kernelExtents);
+				penaltiesVerticalPass [x, 0] += penaltiesHorizontalPass [x, sampleY];
+			}
+
+			float blurredValues = penaltiesVerticalPass [x, 0] / (kernelSize * kernelSize);
+			values [x, 0] = blurredValues;
+
+			for (int y = 1; y < gridSize; y++) {
+				int removeIndex = Mathf.Clamp(y - kernelExtents - 1, 0, gridSize);
+				int addIndex = Mathf.Clamp(y + kernelExtents, 0, gridSize-1);
+
+				penaltiesVerticalPass [x, y] = penaltiesVerticalPass [x, y-1] - penaltiesHorizontalPass [x,removeIndex] + penaltiesHorizontalPass [x, addIndex];
+				blurredValues = penaltiesVerticalPass [x, y] / (kernelSize * kernelSize);
+				values [x, y] = blurredValues;
+			}
+		}
+		return values;
+	}
+
+	static T[,] removeOffset<T> (T[,] values, int offset) {
+		int width = values.GetLength (0) - offset * 2;
+		int height = values.GetLength (1) - offset * 2;
+		T[,] output = new T[width, height];
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				output [i, j] = values [i + offset, j + offset];
 			}
 		}
 		return output;
@@ -106,7 +94,7 @@ public struct BiomeMap {
 	public readonly int numBiomes;
 	public readonly float[,] heightMultMat;
 
-	public BiomeMap(int[,] biomeMapIndexes, int numBiomes, int[,] borderCoords, float[,] heightMultMat) {
+	public BiomeMap(int[,] biomeMapIndexes, int numBiomes, float[,] heightMultMat) {
 		this.biomeMapIndexes = biomeMapIndexes;
 		this.numBiomes = numBiomes;
 		this.heightMultMat = heightMultMat;

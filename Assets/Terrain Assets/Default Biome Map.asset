@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b4114d7b2354be0be026638d553865b, type: 3}
   m_Name: Default Biome Map
   m_EditorClassIdentifier: 
-  autoUpdate: 0
+  autoUpdate: 1
   noiseSettings:
     normalizeMode: 1
     scale: 103.1
@@ -21,11 +21,10 @@ MonoBehaviour:
     lacunarity: 1.86
     seed: 391
     offset: {x: 0, y: 0}
-  smoothingRadius: 6
-  smoothingWeight: 3.1
+  smoothingRadius: 3
   Biomes:
   - startValue: 0.33
-    heightMult: 1
+    heightMult: 2.08
     heightCurve:
       serializedVersion: 2
       m_Curve:

@@ -7,10 +7,8 @@ using UnityEngine;
 public class BiomeMapSettings : UpdatableData
 {
     public NoiseSettings noiseSettings;
-    [Range(0,10)]
+    [Range (0, 10)]
     public int smoothingRadius;
-    [Range(1, 10)] 
-    public float smoothingWeight;
     public Biome[] Biomes;
     
 #if UNITY_EDITOR
