@@ -32,9 +32,11 @@ namespace ProceduralTerrainGeneration
 		List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
 
 		void Start() {
+			float minHeight = (!useBiomes) ? heightMapSettings.minHeight : biomeMapSettings.minHeight * heightMapSettings.minHeight;
+			float maxHeight = (!useBiomes) ? heightMapSettings.maxHeight : biomeMapSettings.maxHeight * heightMapSettings.maxHeight;
 
 			textureSettings.ApplyToMaterial (mapMaterial);
-			textureSettings.UpdateMeshHeights (mapMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
+			textureSettings.UpdateMeshHeights (mapMaterial, minHeight, maxHeight);
 
 			float maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
 			meshWorldSize = meshSettings.meshWorldSize;
