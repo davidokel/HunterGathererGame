@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using ProceduralTerrainGeneration;
+using ProceduralTerrainGeneration.Data;
 
 public class MapPreview : MonoBehaviour {
 
@@ -31,12 +32,13 @@ public class MapPreview : MonoBehaviour {
 	public void DrawMapInEditor() {
 		float minHeight = (drawMode != DrawMode.BiomeMesh) ? heightMapSettings.minHeight : biomeMapSettings.minHeight * heightMapSettings.minHeight;
 		float maxHeight = (drawMode != DrawMode.BiomeMesh) ? heightMapSettings.maxHeight : biomeMapSettings.maxHeight * heightMapSettings.maxHeight;
-
+		
 		textureData.ApplyToMaterial (terrainMaterial);
 		textureData.UpdateMeshHeights (terrainMaterial, minHeight, maxHeight);
-		HeightMap heightMap = HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero);
-		HeightMap biomeHeightMap = HeightMapGenerator.GenerateHeightMap(meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero, biomeMapSettings);
-		BiomeMap biomeMap = BiomeMapGenerator.GenerateBiomeMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, biomeMapSettings, Vector2.zero);
+		HeightMap heightMap = HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero).heightMap;
+		MapOutputContainer mapOutputContainer = HeightMapGenerator.GenerateHeightMap(meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero, biomeMapSettings);
+		HeightMap biomeHeightMap = mapOutputContainer.heightMap;
+		BiomeMap biomeMap = mapOutputContainer.biomeMap;
 		if (drawMode == DrawMode.NoiseMap) {
 			DrawTexture (TextureGenerator.TextureFromHeightMap (heightMap));
 		} else if (drawMode == DrawMode.Mesh) {

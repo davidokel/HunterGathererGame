@@ -15,7 +15,7 @@ MonoBehaviour:
   autoUpdate: 1
   noiseSettings:
     normalizeMode: 1
-    scale: 1000
+    scale: 50
     octaves: 6
     persistance: 0.054
     lacunarity: 1.86
@@ -24,7 +24,7 @@ MonoBehaviour:
   smoothingRadius: 5
   Biomes:
   - startValue: 0.33
-    heightMult: 2.62
+    heightMult: 2.63
     heightCurve:
       serializedVersion: 2
       m_Curve:
@@ -92,8 +92,8 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.17669831
       - serializedVersion: 3
-        time: 0.8059517
-        value: 0.23704588
+        time: 0.82340777
+        value: 0.18278563
         inSlope: 0.039078284
         outSlope: 0.039078284
         tangentMode: 0
