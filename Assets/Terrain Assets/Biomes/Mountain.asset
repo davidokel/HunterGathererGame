@@ -9,8 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24bba47da550c4e86a3c8ae5cf2e264d, type: 3}
-  m_Name: DesertTextureData
+  m_Script: {fileID: 11500000, guid: 7238f0098b9ca374d87938a22b0396b1, type: 3}
+  m_Name: New Biome
   m_EditorClassIdentifier: 
   autoUpdate: 0
-  layers: []
+  startValue: 0
+  heightMult: 1
+  heightCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  biomeLayers: []
