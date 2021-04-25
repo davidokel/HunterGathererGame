@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using ProceduralTerrainGeneration;
+using ProceduralTerrainGeneration.Data;
 using UnityEngine;
 
 public static class BiomeMapGenerator {

@@ -81,7 +81,7 @@ Material:
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
-    - testScale: 10.56
+    - testScale: 10.53
     - testTextureScale: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}

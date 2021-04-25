@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using ProceduralTerrainGeneration.Data;
 using UnityEngine;
 
 namespace ProceduralTerrainGeneration
@@ -32,9 +33,11 @@ namespace ProceduralTerrainGeneration
 		List<TerrainChunk> visibleTerrainChunks = new List<TerrainChunk>();
 
 		void Start() {
+			float minHeight = (!useBiomes) ? heightMapSettings.minHeight : biomeMapSettings.minHeight * heightMapSettings.minHeight;
+			float maxHeight = (!useBiomes) ? heightMapSettings.maxHeight : biomeMapSettings.maxHeight * heightMapSettings.maxHeight;
 
 			textureSettings.ApplyToMaterial (mapMaterial);
-			textureSettings.UpdateMeshHeights (mapMaterial, heightMapSettings.minHeight, heightMapSettings.maxHeight);
+			textureSettings.UpdateMeshHeights (mapMaterial, minHeight, maxHeight);
 
 			float maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;
 			meshWorldSize = meshSettings.meshWorldSize;
@@ -75,10 +78,10 @@ namespace ProceduralTerrainGeneration
 						if (terrainChunkDictionary.ContainsKey (viewedChunkCoord)) {
 							terrainChunkDictionary [viewedChunkCoord].UpdateTerrainChunk ();
 						} else {
-							TerrainChunk newChunk = new TerrainChunk (viewedChunkCoord,heightMapSettings,meshSettings, detailLevels, colliderLODIndex, transform, viewer, mapMaterial);
+							TerrainChunk newChunk = new TerrainChunk (viewedChunkCoord,heightMapSettings, biomeMapSettings ,meshSettings, detailLevels, colliderLODIndex, transform, viewer, mapMaterial);
 							terrainChunkDictionary.Add (viewedChunkCoord, newChunk);
 							newChunk.onVisibilityChanged += OnTerrainChunkVisibilityChanged;
-							newChunk.Load (useBiomes, biomeMapSettings);
+							newChunk.Load (useBiomes);
 						}
 					}
 
