@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Linq;
+using ProceduralTerrainGeneration.Data;
 
 [CreateAssetMenu()]
 public class TextureData : UpdatableData {
@@ -13,7 +14,7 @@ public class TextureData : UpdatableData {
 	float savedMinHeight;
 	float savedMaxHeight;
 
-	public void ApplyToMaterial(Material material) {
+	public void ApplyToMaterial(Material material, BiomeMapSettings settings, BiomeMap map) {
 		if (material.shader.Equals(Shader.Find("Custom/Terrain"))) {
 			material.SetInt ("layerCount", layers.Length);
 			material.SetColorArray ("baseColours", layers.Select(x => x.tint).ToArray());
@@ -23,11 +24,11 @@ public class TextureData : UpdatableData {
 			material.SetFloatArray ("baseTextureScales", layers.Select(x => x.textureScale).ToArray());
 			Texture2DArray texturesArray = GenerateTextureArray (layers.Select (x => x.texture).ToArray ());
 			material.SetTexture ("baseTextures", texturesArray);
-		} else {
-			Debug.Log ("No Match");
+		} else if (material.shader.Equals(Shader.Find("Custom/BiomeTerrain"))) {
+			material.SetColorArray("biomeColours", settings.Biomes.Select(x => x.biomeColour).ToArray());
+			//TODO add set int array
 		}
 		
-
 		UpdateMeshHeights (material, savedMinHeight, savedMaxHeight);
 	}
 

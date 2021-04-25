@@ -8,5 +8,6 @@ namespace ProceduralTerrainGeneration.Data {
 			public float heightMult = 1;
 			public AnimationCurve heightCurve;
 			public TextureData.Layer[] biomeLayers;
+			public Color biomeColour;
 	}
 }
