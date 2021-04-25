@@ -12,13 +12,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7238f0098b9ca374d87938a22b0396b1, type: 3}
   m_Name: Plains
   m_EditorClassIdentifier: 
-  autoUpdate: 0
-  startValue: 0
+  autoUpdate: 1
+  startValue: 1
   heightMult: 1
   heightCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 12.415526
+      outSlope: 12.415526
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.07677682
+      value: 0.9532246
+      inSlope: 0.13487263
+      outSlope: 0.13487263
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.07288167
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.050665323
+      outSlope: 0.050665323
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   biomeLayers: []
+  biomeColour: {r: 0, g: 0, b: 0, a: 0}
