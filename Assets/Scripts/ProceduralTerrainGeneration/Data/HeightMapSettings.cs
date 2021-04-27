@@ -2,7 +2,7 @@
 using System.Collections;
 using ProceduralTerrainGeneration;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Terrain Data/Height Map Settings")]
 public class HeightMapSettings : UpdatableData {
 
 	public NoiseSettings noiseSettings;

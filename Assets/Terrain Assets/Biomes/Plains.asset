@@ -49,4 +49,4 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   biomeLayers: []
-  biomeColour: {r: 0, g: 0, b: 0, a: 0}
+  biomeColour: {r: 0.0047169924, g: 1, b: 0.1395918, a: 1}

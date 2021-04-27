@@ -3,7 +3,7 @@ using System.Collections;
 using System.Linq;
 using ProceduralTerrainGeneration.Data;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Terrain Data/Texture Data")]
 public class TextureData : UpdatableData {
 
 	const int textureSize = 512;
@@ -14,19 +14,33 @@ public class TextureData : UpdatableData {
 	float savedMinHeight;
 	float savedMaxHeight;
 
-	public void ApplyToMaterial(Material material, BiomeMapSettings settings, BiomeMap map) {
-		if (material.shader.Equals(Shader.Find("Custom/Terrain"))) {
-			material.SetInt ("layerCount", layers.Length);
-			material.SetColorArray ("baseColours", layers.Select(x => x.tint).ToArray());
-			material.SetFloatArray ("baseStartHeights", layers.Select(x => x.startHeight).ToArray());
-			material.SetFloatArray ("baseBlends", layers.Select(x => x.blendStrength).ToArray());
-			material.SetFloatArray ("baseColourStrength", layers.Select(x => x.tintStrength).ToArray());
-			material.SetFloatArray ("baseTextureScales", layers.Select(x => x.textureScale).ToArray());
-			Texture2DArray texturesArray = GenerateTextureArray (layers.Select (x => x.texture).ToArray ());
-			material.SetTexture ("baseTextures", texturesArray);
-		} else if (material.shader.Equals(Shader.Find("Custom/BiomeTerrain"))) {
-			material.SetColorArray("biomeColours", settings.Biomes.Select(x => x.biomeColour).ToArray());
-			//TODO add set int array
+	public void ApplyToMaterial(Material material) {
+		
+        material.SetInt ("layerCount", layers.Length);
+        material.SetColorArray ("baseColours", layers.Select(x => x.tint).ToArray());
+        material.SetFloatArray ("baseStartHeights", layers.Select(x => x.startHeight).ToArray());
+        material.SetFloatArray ("baseBlends", layers.Select(x => x.blendStrength).ToArray());
+        material.SetFloatArray ("baseColourStrength", layers.Select(x => x.tintStrength).ToArray());
+        material.SetFloatArray ("baseTextureScales", layers.Select(x => x.textureScale).ToArray());
+        Texture2DArray texturesArray = GenerateTextureArray (layers.Select (x => x.texture).ToArray ());
+        material.SetTexture ("baseTextures", texturesArray);
+    
+		UpdateMeshHeights (material, savedMinHeight, savedMaxHeight);
+	}
+
+	public void ApplyToBiomeMaterial(Material material, BiomeMapSettings settings, BiomeMap map, float offset, Vector3 centre) {
+		material.SetColorArray("biomeColours", settings.Biomes.Select(x => x.biomeColour).ToArray());
+		material.SetInt("numBiomes",settings.Biomes.Length);
+
+		int size = map.biomeMapIndexes.GetLength (0);
+		material.SetInt("mapSize",size);
+		material.SetFloat("offset",offset);
+		material.SetVector("tileCentre", centre);
+
+		for (int j = 0; j < size; j++) {
+			for (int i = 0; i < size; i++) {
+				material.SetInt ("biomeMap" + (j * size + i), map.biomeMapIndexes [i, j]);
+			}
 		}
 		
 		UpdateMeshHeights (material, savedMinHeight, savedMaxHeight);

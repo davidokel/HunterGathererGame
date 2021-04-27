@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Mountain
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  startValue: 0.277
+  startValue: 0.26
   heightMult: 3.19
   heightCurve:
     serializedVersion: 2
@@ -40,4 +40,4 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   biomeLayers: []
-  biomeColour: {r: 0, g: 0, b: 0, a: 0}
+  biomeColour: {r: 0.13399029, g: 0, b: 1, a: 1}

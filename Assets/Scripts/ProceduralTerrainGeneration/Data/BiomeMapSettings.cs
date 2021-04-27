@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace ProceduralTerrainGeneration.Data {
-    [CreateAssetMenu()]
+    [CreateAssetMenu(menuName = "Terrain Data/Biome Map Settings")]
     public class BiomeMapSettings : UpdatableData
     {
         public NoiseSettings noiseSettings;

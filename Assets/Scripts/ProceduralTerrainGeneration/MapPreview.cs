@@ -25,32 +25,46 @@ public class MapPreview : MonoBehaviour {
 	[Range(0,MeshSettings.numSupportedLODs-1)]
 	public int editorPreviewLOD;
 	public bool autoUpdate;
-
-
+	
 	private BiomeMap biomeMap;
+	private float offset;
 
 	public void DrawMapInEditor() {
+		this.offset = meshSettings.meshWorldSize / 2;
 		float minHeight = (drawMode != DrawMode.BiomeMesh) ? heightMapSettings.minHeight : biomeMapSettings.minHeight * heightMapSettings.minHeight;
 		float maxHeight = (drawMode != DrawMode.BiomeMesh) ? heightMapSettings.maxHeight : biomeMapSettings.maxHeight * heightMapSettings.maxHeight;
-		
+
 		HeightMap heightMap = HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero).heightMap;
-		MapOutputContainer mapOutputContainer = HeightMapGenerator.GenerateHeightMap(meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero, biomeMapSettings);
+		MapOutputContainer mapOutputContainer = HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero, biomeMapSettings);
 		HeightMap biomeHeightMap = mapOutputContainer.heightMap;
 		this.biomeMap = mapOutputContainer.biomeMap;
-		textureData.ApplyToMaterial (terrainMaterial, biomeMapSettings, biomeMap);
+
+		if (terrainMaterial.shader.Equals (Shader.Find ("Custom/Terrain"))) {
+			textureData.ApplyToMaterial (terrainMaterial);
+		} else if (terrainMaterial.shader.Equals (Shader.Find ("Custom/BiomeTerrain"))) {
+			textureData.ApplyToBiomeMaterial (terrainMaterial, biomeMapSettings, biomeMap, offset, new Vector3 (0, 0, 0));
+		}
 		textureData.UpdateMeshHeights (terrainMaterial, minHeight, maxHeight);
-		if (drawMode == DrawMode.NoiseMap) {
-			DrawTexture (TextureGenerator.TextureFromHeightMap (heightMap));
-		} else if (drawMode == DrawMode.Mesh) {
-			DrawMesh (MeshGenerator.GenerateTerrainMesh (heightMap.values,meshSettings, editorPreviewLOD));
-		} else if (drawMode == DrawMode.FalloffMap) {
-			DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(FalloffGenerator.GenerateFalloffMap(meshSettings.numVertsPerLine),0,1)));
-		} else if (drawMode == DrawMode.Biomes) {
-			DrawTexture(TextureGenerator.TextureFromBiomeMap(biomeMap));
-		} else if (drawMode == DrawMode.BiomeMesh) {
-			DrawMesh(MeshGenerator.GenerateTerrainMesh(biomeHeightMap.values,meshSettings,editorPreviewLOD));
-		} else if (drawMode == DrawMode.BiomeMapHeightMult) {
-			DrawTexture(TextureGenerator.TextureFromBiomeHeightMult(biomeMap));
+		
+		switch (drawMode) {
+			case DrawMode.NoiseMap:
+				DrawTexture (TextureGenerator.TextureFromHeightMap (heightMap));
+				break;
+			case DrawMode.Mesh:
+				DrawMesh (MeshGenerator.GenerateTerrainMesh (heightMap.values,meshSettings, editorPreviewLOD));
+				break;
+			case DrawMode.FalloffMap:
+				DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(FalloffGenerator.GenerateFalloffMap(meshSettings.numVertsPerLine),0,1)));
+				break;
+			case DrawMode.Biomes:
+				DrawTexture(TextureGenerator.TextureFromBiomeMap(biomeMap));
+				break;
+			case DrawMode.BiomeMesh:
+				DrawMesh(MeshGenerator.GenerateTerrainMesh(biomeHeightMap.values,meshSettings,editorPreviewLOD));
+				break;
+			case DrawMode.BiomeMapHeightMult:
+				DrawTexture(TextureGenerator.TextureFromBiomeHeightMult(biomeMap));
+				break;
 		}
 	}
 
@@ -82,7 +96,11 @@ public class MapPreview : MonoBehaviour {
 	}
 
 	void OnTextureValuesUpdated() {
-		textureData.ApplyToMaterial (terrainMaterial, biomeMapSettings, biomeMap);
+		if (terrainMaterial.shader.Equals (Shader.Find ("Custom/Terrain"))) {
+			textureData.ApplyToMaterial (terrainMaterial);
+		} else if (terrainMaterial.shader.Equals (Shader.Find ("Custom/BiomeTerrain"))) {
+			textureData.ApplyToBiomeMaterial (terrainMaterial, biomeMapSettings, biomeMap, offset, new Vector3 (0, 0, 0));
+		}
 	}
 
 	void OnValidate() {

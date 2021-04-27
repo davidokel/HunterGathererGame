@@ -1,6 +1,6 @@
 ﻿Shader "Custom/BiomeTerrain" {
     Properties {
-
+		testTexture("Texture", 2D) = "white"{}
     }
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -15,17 +15,18 @@
 
 		const static int maxNumBiomes = 10;
 		const static int maxLayerCount = 8;
-		const static int maxMapSize = 240;
+		const static int maxMapSize = 2304;
 		const static float epsilon = 1E-4;
 
 		int numBiomes;
+		int mapSize;
 		float3 biomeColours[maxNumBiomes];
-		int biomeMap[maxMapSize,maxMapSize];
+		float3 tileCentre;
+		uniform int biomeMap[maxMapSize];
+		float offset;
 
 		float minHeight;
 		float maxHeight;
-
-		UNITY_DECLARE_TEX2DARRAY(baseTextures);
 
 		struct Input {
 			float3 worldPos;
@@ -36,16 +37,14 @@
 			return saturate((value-a)/(b-a));
 		}
 
-		float3 triplanar(float3 worldPos, float scale, float3 blendAxes, int textureIndex) {
-			float3 scaledWorldPos = worldPos / scale;
-			float3 xProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.y, scaledWorldPos.z, textureIndex)) * blendAxes.x;
-			float3 yProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.x, scaledWorldPos.z, textureIndex)) * blendAxes.y;
-			float3 zProjection = UNITY_SAMPLE_TEX2DARRAY(baseTextures, float3(scaledWorldPos.x, scaledWorldPos.y, textureIndex)) * blendAxes.z;
-			return xProjection + yProjection + zProjection;
-		}
-
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-			o.Albedo 
+			int biomeX = round(IN.worldPos.x - tileCentre.x - offset);
+			int biomeY = round(IN.worldPos.z - tileCentre.z - offset);
+			
+			int biome = biomeMap[23 * mapSize + 23];
+			
+			o.Albedo = biomeColours[biome];
+
 		}
         ENDCG
     }

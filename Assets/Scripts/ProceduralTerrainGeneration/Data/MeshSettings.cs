@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[CreateAssetMenu()]
+[CreateAssetMenu(menuName = "Terrain Data/Mesh Settings")]
 public class MeshSettings : UpdatableData {
 
 	public const int numSupportedLODs = 5;

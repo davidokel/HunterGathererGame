@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace ProceduralTerrainGeneration.Data {
-	[CreateAssetMenu()]
+	[CreateAssetMenu(menuName = "World Generation/Biome")]
 	public class Biome : UpdatableData{
 		[Range(0,1)]
 			public float startValue;

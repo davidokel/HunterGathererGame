@@ -15,13 +15,13 @@ MonoBehaviour:
   autoUpdate: 1
   noiseSettings:
     normalizeMode: 1
-    scale: 50
+    scale: 26
     octaves: 6
-    persistance: 0.054
+    persistance: 0.084
     lacunarity: 1.86
     seed: 391
-    offset: {x: 0, y: 0}
-  smoothingRadius: 5
+    offset: {x: 17.67, y: 0}
+  smoothingRadius: 4
   Biomes:
   - {fileID: 11400000, guid: 378d283e98c11374e83c914a60d9514d, type: 2}
   - {fileID: 11400000, guid: 7623ef5ef9b2823418ac8b9ffbbcd10f, type: 2}
