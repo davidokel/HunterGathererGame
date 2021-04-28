@@ -11,7 +11,7 @@
 		#pragma surface surf Standard fullforwardshadows
 
 		// Use shader model 3.0 target, to get nicer looking lighting
-		#pragma target 5.0
+		#pragma target 3.5
 		
 		const static int maxNumBiomes = 10;
 		/*const static int maxLayerCount = 8;
@@ -26,10 +26,11 @@
 		struct BiomeMap {
 			int index;
 		};
+
+
 		#ifdef SHADER_API_D3D11
-			StructuredBuffer<BiomeMap> biomeMap;
+		StructuredBuffer<BiomeMap> biomeMap;
 		#endif
-		
 		
 		float worldSizeRatio;
 
@@ -49,11 +50,12 @@
 			int biomeX = round((IN.worldPos.x - biomeOrigin.x) / worldSizeRatio);
 			int biomeY = round((IN.worldPos.z - biomeOrigin.y) / worldSizeRatio);
 			
-			#ifdef SHADER_API_D3D11	
+			#ifdef SHADER_API_D3D11
 				int biome = biomeMap[biomeY * mapSize + biomeX].index;
-				o.Albedo = biomeColours[biome];
+				o.Albedo = biomeColours[biome].rgb;
 			#endif
-			
+
+			//o.Albedo = o.Albedo * float3 (IN.worldPos.x, IN.worldPos.y, IN.worldPos.z); 
 		}
         ENDCG
     }

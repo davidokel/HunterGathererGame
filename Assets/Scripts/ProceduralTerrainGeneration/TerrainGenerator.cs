@@ -36,7 +36,7 @@ namespace ProceduralTerrainGeneration
 			float minHeight = (!useBiomes) ? heightMapSettings.minHeight : biomeMapSettings.minHeight * heightMapSettings.minHeight;
 			float maxHeight = (!useBiomes) ? heightMapSettings.maxHeight : biomeMapSettings.maxHeight * heightMapSettings.maxHeight;
 
-			//textureSettings.ApplyToMaterial (mapMaterial, biomeMapSettings, new BiomeMap ()); //TODO FIX
+			textureSettings.ApplyToMaterial (mapMaterial); 
 			textureSettings.UpdateMeshHeights (mapMaterial, minHeight, maxHeight);
 
 			float maxViewDst = detailLevels [detailLevels.Length - 1].visibleDstThreshold;

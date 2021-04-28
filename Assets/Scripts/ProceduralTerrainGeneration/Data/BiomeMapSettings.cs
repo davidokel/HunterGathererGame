@@ -5,6 +5,7 @@ namespace ProceduralTerrainGeneration.Data {
     public class BiomeMapSettings : UpdatableData
     {
         public NoiseSettings noiseSettings;
+        
         [Range (0, 10)]
         public int smoothingRadius;
         public Biome[] Biomes;

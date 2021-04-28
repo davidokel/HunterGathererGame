@@ -35,7 +35,7 @@ public class MapPreview : MonoBehaviour {
 		HeightMap heightMap = HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero).heightMap;
 		MapOutputContainer mapOutputContainer = HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero, biomeMapSettings);
 		HeightMap biomeHeightMap = mapOutputContainer.heightMap;
-		this.biomeMap = mapOutputContainer.biomeMap;
+		biomeMap = mapOutputContainer.biomeMap;
 
 		if (terrainMaterial.shader.Equals (Shader.Find ("Custom/Terrain"))) {
 			textureData.ApplyToMaterial (terrainMaterial);

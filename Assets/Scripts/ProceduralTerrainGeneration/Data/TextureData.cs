@@ -34,8 +34,8 @@ public class TextureData : UpdatableData {
 		material.SetColorArray("biomeColours", settings.Biomes.Select(x => x.biomeColour).ToArray());
 		material.SetInt("numBiomes",settings.Biomes.Length);
 		
-		float worldSize = meshSettings.meshWorldSize;
 		int size = map.biomeMapIndexes.GetLength (0);
+		float worldSize = meshSettings.meshWorldSize;
 		float ratio = worldSize / size;
 		material.SetFloat("worldSizeRatio",ratio);
 		material.SetFloatArray("biomeOrigin",new []{centre.x - worldSize/2, centre.z - worldSize/2});
@@ -47,7 +47,6 @@ public class TextureData : UpdatableData {
 		if (Application.isEditor) {
 			GC.SuppressFinalize(buffer);
 		}
-		GC.SuppressFinalize(buffer);
 		buffer.SetData(shaderMap);
 		material.SetBuffer("biomeMap",buffer);
 
@@ -97,7 +96,7 @@ public class TextureData : UpdatableData {
 	}
 
 	private void OnDisable() {
-		buffer.Dispose();
+		buffer?.Dispose ();
 	}
 
 
