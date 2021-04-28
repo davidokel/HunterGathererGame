@@ -9,8 +9,5 @@ namespace ProceduralTerrainGeneration.Data {
 		public AnimationCurve heightCurve;
 		public TextureData.Layer[] biomeLayers;
 		public Color biomeColour;
-
-		public Vector2 temperatureRange;
-		public Vector2 precipitationRange;
 	}
 }
