@@ -21,7 +21,7 @@ public static class TextureGenerator {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				int val = biomeMap.biomeMapIndexes [x, y];
-				colourMap [y * width + x] = new Color(val/(float)biomeMap.numBiomes,val/(float)biomeMap.numBiomes,val/(float)biomeMap.numBiomes);
+				colourMap [y * width + x] = Color.Lerp (Color.black, Color.white, Mathf.InverseLerp (0, biomeMap.numBiomes - 1, val));
 			}
 		}
 

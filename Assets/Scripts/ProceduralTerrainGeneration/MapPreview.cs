@@ -118,6 +118,11 @@ public class MapPreview : MonoBehaviour {
 		if (biomeMapSettings!= null) {
 			biomeMapSettings.OnValuesUpdated -= OnValuesUpdated;
 			biomeMapSettings.OnValuesUpdated += OnValuesUpdated;
+
+			for (int i = 0; i < biomeMapSettings.Biomes.Length; i++) {
+				biomeMapSettings.Biomes [i].OnValuesUpdated -= OnValuesUpdated;
+				biomeMapSettings.Biomes [i].OnValuesUpdated += OnValuesUpdated;
+			}
 		}
 
 	}

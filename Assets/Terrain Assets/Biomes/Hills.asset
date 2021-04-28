@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a4abcdbe792e54499ed112718f7ada, type: 3}
   m_Name: Hills
   m_EditorClassIdentifier: 
-  autoUpdate: 0
-  startValue: 0.26
+  autoUpdate: 1
+  startValue: 0.378
   heightMult: 1.6
   heightCurve:
     serializedVersion: 2
