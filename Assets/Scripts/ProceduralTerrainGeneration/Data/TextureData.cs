@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Linq;
 using ProceduralTerrainGeneration.Data;
@@ -13,7 +14,8 @@ public class TextureData : UpdatableData {
 
 	float savedMinHeight;
 	float savedMaxHeight;
-
+	
+	ComputeBuffer buffer;
 	public void ApplyToMaterial(Material material) {
 		
         material.SetInt ("layerCount", layers.Length);
@@ -28,21 +30,27 @@ public class TextureData : UpdatableData {
 		UpdateMeshHeights (material, savedMinHeight, savedMaxHeight);
 	}
 
-	public void ApplyToBiomeMaterial(Material material, BiomeMapSettings settings, BiomeMap map, float offset, Vector3 centre) {
+	public void ApplyToBiomeMaterial(Material material, BiomeMapSettings settings, MeshSettings meshSettings, BiomeMap map, Vector3 centre) {
 		material.SetColorArray("biomeColours", settings.Biomes.Select(x => x.biomeColour).ToArray());
 		material.SetInt("numBiomes",settings.Biomes.Length);
-
-		int size = map.biomeMapIndexes.GetLength (0);
-		material.SetInt("mapSize",size);
-		material.SetFloat("offset",offset);
-		material.SetVector("tileCentre", centre);
-
-		for (int j = 0; j < size; j++) {
-			for (int i = 0; i < size; i++) {
-				material.SetInt ("biomeMap" + (j * size + i), map.biomeMapIndexes [i, j]);
-			}
-		}
 		
+		float worldSize = meshSettings.meshWorldSize;
+		int size = map.biomeMapIndexes.GetLength (0);
+		float ratio = worldSize / size;
+		material.SetFloat("worldSizeRatio",ratio);
+		material.SetFloatArray("biomeOrigin",new []{centre.x - worldSize/2, centre.z - worldSize/2});
+		material.SetInt("mapSize",size);
+
+		ShaderMap[] shaderMap = ShaderMapFromBiomes (map);
+		int bufferSize = ShaderMap.Size ();
+		buffer = new ComputeBuffer (shaderMap.Length, bufferSize);
+		if (Application.isEditor) {
+			GC.SuppressFinalize(buffer);
+		}
+		GC.SuppressFinalize(buffer);
+		buffer.SetData(shaderMap);
+		material.SetBuffer("biomeMap",buffer);
+
 		UpdateMeshHeights (material, savedMinHeight, savedMaxHeight);
 	}
 
@@ -62,6 +70,36 @@ public class TextureData : UpdatableData {
 		textureArray.Apply ();
 		return textureArray;
 	}
+
+	private ShaderMap[] ShaderMapFromBiomes(BiomeMap biomeMap) {
+		int width = biomeMap.biomeMapIndexes.GetLength (0);
+		int height = biomeMap.biomeMapIndexes.GetLength (1);
+		
+		ShaderMap[] map = new ShaderMap[width * height];
+		for (int j = 0; j < height; j++) {
+			for (int i = 0; i < width; i++) {
+				map[j * width + i] = new ShaderMap(biomeMap.biomeMapIndexes [i, j]);
+			}
+		}
+		return map;
+	}
+	
+	public struct ShaderMap {
+		public int index;
+
+		public ShaderMap(int index) {
+			this.index = index;
+		}
+
+		public static int Size () {
+			return sizeof(int);
+		}
+	}
+
+	private void OnDisable() {
+		buffer.Dispose();
+	}
+
 
 	[System.Serializable]
 	public class Layer {

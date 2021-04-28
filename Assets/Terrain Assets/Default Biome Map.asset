@@ -23,6 +23,6 @@ MonoBehaviour:
     offset: {x: 17.67, y: 0}
   smoothingRadius: 4
   Biomes:
-  - {fileID: 11400000, guid: 378d283e98c11374e83c914a60d9514d, type: 2}
-  - {fileID: 11400000, guid: 7623ef5ef9b2823418ac8b9ffbbcd10f, type: 2}
-  - {fileID: 11400000, guid: d319c6c7f5889a84692f8fa7bd508821, type: 2}
+  - {fileID: 11400000, guid: 8341c6f076907a643a251c3c9382ac7f, type: 2}
+  - {fileID: 11400000, guid: c3687e591a5079c459bbb5809945f91e, type: 2}
+  - {fileID: 11400000, guid: 0068e53eaa6e7d44fa3f713f0ba3372f, type: 2}

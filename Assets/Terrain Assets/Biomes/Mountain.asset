@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7238f0098b9ca374d87938a22b0396b1, type: 3}
+  m_Script: {fileID: 11500000, guid: 22a4abcdbe792e54499ed112718f7ada, type: 3}
   m_Name: Mountain
   m_EditorClassIdentifier: 
-  autoUpdate: 1
-  startValue: 0.26
-  heightMult: 3.19
+  autoUpdate: 0
+  startValue: 0.52
+  heightMult: 2.94
   heightCurve:
     serializedVersion: 2
     m_Curve:
@@ -30,8 +30,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -40,4 +40,4 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   biomeLayers: []
-  biomeColour: {r: 0.13399029, g: 0, b: 1, a: 1}
+  biomeColour: {r: 1, g: 0.8873018, b: 0, a: 0}

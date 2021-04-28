@@ -27,10 +27,8 @@ public class MapPreview : MonoBehaviour {
 	public bool autoUpdate;
 	
 	private BiomeMap biomeMap;
-	private float offset;
 
 	public void DrawMapInEditor() {
-		this.offset = meshSettings.meshWorldSize / 2;
 		float minHeight = (drawMode != DrawMode.BiomeMesh) ? heightMapSettings.minHeight : biomeMapSettings.minHeight * heightMapSettings.minHeight;
 		float maxHeight = (drawMode != DrawMode.BiomeMesh) ? heightMapSettings.maxHeight : biomeMapSettings.maxHeight * heightMapSettings.maxHeight;
 
@@ -42,7 +40,7 @@ public class MapPreview : MonoBehaviour {
 		if (terrainMaterial.shader.Equals (Shader.Find ("Custom/Terrain"))) {
 			textureData.ApplyToMaterial (terrainMaterial);
 		} else if (terrainMaterial.shader.Equals (Shader.Find ("Custom/BiomeTerrain"))) {
-			textureData.ApplyToBiomeMaterial (terrainMaterial, biomeMapSettings, biomeMap, offset, new Vector3 (0, 0, 0));
+			textureData.ApplyToBiomeMaterial (terrainMaterial, biomeMapSettings, meshSettings, biomeMap, new Vector3 (0, 0, 0));
 		}
 		textureData.UpdateMeshHeights (terrainMaterial, minHeight, maxHeight);
 		
@@ -99,7 +97,7 @@ public class MapPreview : MonoBehaviour {
 		if (terrainMaterial.shader.Equals (Shader.Find ("Custom/Terrain"))) {
 			textureData.ApplyToMaterial (terrainMaterial);
 		} else if (terrainMaterial.shader.Equals (Shader.Find ("Custom/BiomeTerrain"))) {
-			textureData.ApplyToBiomeMaterial (terrainMaterial, biomeMapSettings, biomeMap, offset, new Vector3 (0, 0, 0));
+			textureData.ApplyToBiomeMaterial (terrainMaterial, biomeMapSettings, meshSettings, biomeMap, new Vector3 (0, 0, 0));
 		}
 	}
 

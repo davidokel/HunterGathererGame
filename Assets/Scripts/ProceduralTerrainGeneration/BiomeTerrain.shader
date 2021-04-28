@@ -11,19 +11,27 @@
 		#pragma surface surf Standard fullforwardshadows
 
 		// Use shader model 3.0 target, to get nicer looking lighting
-		#pragma target 3.0
-
+		#pragma target 5.0
+		
 		const static int maxNumBiomes = 10;
-		const static int maxLayerCount = 8;
-		const static int maxMapSize = 2304;
-		const static float epsilon = 1E-4;
+		/*const static int maxLayerCount = 8;
+		const static int maxMapSize = 2809;
+		const static float epsilon = 1E-4;*/
 
 		int numBiomes;
 		int mapSize;
 		float3 biomeColours[maxNumBiomes];
-		float3 tileCentre;
-		uniform int biomeMap[maxMapSize];
-		float offset;
+		float2 biomeOrigin;
+
+		struct BiomeMap {
+			int index;
+		};
+		#ifdef SHADER_API_D3D11
+			StructuredBuffer<BiomeMap> biomeMap;
+		#endif
+		
+		
+		float worldSizeRatio;
 
 		float minHeight;
 		float maxHeight;
@@ -38,13 +46,14 @@
 		}
 
 		void surf (Input IN, inout SurfaceOutputStandard o) {
-			int biomeX = round(IN.worldPos.x - tileCentre.x - offset);
-			int biomeY = round(IN.worldPos.z - tileCentre.z - offset);
+			int biomeX = round((IN.worldPos.x - biomeOrigin.x) / worldSizeRatio);
+			int biomeY = round((IN.worldPos.z - biomeOrigin.y) / worldSizeRatio);
 			
-			int biome = biomeMap[23 * mapSize + 23];
+			#ifdef SHADER_API_D3D11	
+				int biome = biomeMap[biomeY * mapSize + biomeX].index;
+				o.Albedo = biomeColours[biome];
+			#endif
 			
-			o.Albedo = biomeColours[biome];
-
 		}
         ENDCG
     }
