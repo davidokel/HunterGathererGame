@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using ProceduralTerrainGeneration;
+using Unity.VisualScripting;
 
 public static class TextureGenerator {
 
@@ -13,44 +14,27 @@ public static class TextureGenerator {
 		return texture;
 	}
 
-	public static Texture2D TextureFromBiomeMap(BiomeMap biomeMap) {
-		int width = biomeMap.biomeMapIndexes.GetLength (0);
-		int height = biomeMap.biomeMapIndexes.GetLength (1);
-		
+	public static Texture2D TextureFromIntMap(int[,] map, int max, int min, Color a, Color b) {
+		int width = map.GetLength (0);
+		int height = map.GetLength (1);
+
 		Color[] colourMap = new Color[width * height];
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				int val = biomeMap.biomeMapIndexes [x, y];
-				colourMap [y * width + x] = Color.Lerp (Color.black, Color.white, Mathf.InverseLerp (0, biomeMap.numBiomes - 1, val));
+				colourMap [y * width + x] = Color.Lerp (a, b, Mathf.InverseLerp(min,max,map [x, y]));
 			}
 		}
 
-		return TextureFromColourMap(colourMap,width,height);
+		return TextureFromColourMap (colourMap, width, height);
 	}
-	
-	public static Texture2D TextureFromBiomeHeightMult(BiomeMap biomeMap) {
-		int width = biomeMap.biomeMapIndexes.GetLength (0);
-		int height = biomeMap.biomeMapIndexes.GetLength (1);
-		
-		Color[] colourMap = new Color[width * height];
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				float val = biomeMap.heightMultMat [x, y];
-				colourMap [y * width + x] = new Color(val/biomeMap.numBiomes,val/biomeMap.numBiomes,val/biomeMap.numBiomes);
-			}
-		}
-
-		return TextureFromColourMap(colourMap,width,height);
-	}
-	
-	public static Texture2D TextureFromHeightMap(HeightMap heightMap) {
-		int width = heightMap.values.GetLength (0);
-		int height = heightMap.values.GetLength (1);
+	public static Texture2D TextureFromFloatMap(float[,] map, float max, float min, Color a, Color b) {
+		int width = map.GetLength (0);
+		int height = map.GetLength (1);
 
 		Color[] colourMap = new Color[width * height];
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				colourMap [y * width + x] = Color.Lerp (Color.black, Color.white, Mathf.InverseLerp(heightMap.minValue,heightMap.maxValue,heightMap.values [x, y]));
+				colourMap [y * width + x] = Color.Lerp (a, b, Mathf.InverseLerp(min,max,map [x, y]));
 			}
 		}
 

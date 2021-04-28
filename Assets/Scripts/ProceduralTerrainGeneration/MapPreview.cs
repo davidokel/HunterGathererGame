@@ -46,28 +46,26 @@ public class MapPreview : MonoBehaviour {
 		
 		switch (drawMode) {
 			case DrawMode.NoiseMap:
-				DrawTexture (TextureGenerator.TextureFromHeightMap (heightMap));
+				DrawTexture (TextureGenerator.TextureFromFloatMap(heightMap.values,heightMap.minValue, heightMap.maxValue, Color.black, Color.white));
 				break;
 			case DrawMode.Mesh:
 				DrawMesh (MeshGenerator.GenerateTerrainMesh (heightMap.values,meshSettings, editorPreviewLOD));
 				break;
 			case DrawMode.FalloffMap:
-				DrawTexture(TextureGenerator.TextureFromHeightMap(new HeightMap(FalloffGenerator.GenerateFalloffMap(meshSettings.numVertsPerLine),0,1)));
+				HeightMap falloffMap = new HeightMap (FalloffGenerator.GenerateFalloffMap (meshSettings.numVertsPerLine), 0, 1);
+				DrawTexture(TextureGenerator.TextureFromFloatMap(falloffMap.values, falloffMap.minValue, falloffMap.maxValue, Color.black, Color.white));
 				break;
 			case DrawMode.Biomes:
-				DrawTexture(TextureGenerator.TextureFromBiomeMap(biomeMap));
+				DrawTexture(TextureGenerator.TextureFromIntMap(biomeMap.biomeMapIndexes, 0, biomeMap.numBiomes - 1, Color.green, Color.blue));
 				break;
 			case DrawMode.BiomeMesh:
 				DrawMesh(MeshGenerator.GenerateTerrainMesh(biomeHeightMap.values,meshSettings,editorPreviewLOD));
 				break;
 			case DrawMode.BiomeMapHeightMult:
-				DrawTexture(TextureGenerator.TextureFromBiomeHeightMult(biomeMap));
+				DrawTexture(TextureGenerator.TextureFromFloatMap(biomeMap.heightMultMat, biomeMapSettings.minHeight, biomeMapSettings.maxHeight, Color.black, Color.white));
 				break;
 		}
 	}
-
-
-
 
 
 	public void DrawTexture(Texture2D texture) {

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using ProceduralTerrainGeneration;
+using ProceduralTerrainGeneration.Data;
 
 [CreateAssetMenu(menuName = "Terrain Data/Height Map Settings")]
 public class HeightMapSettings : UpdatableData {

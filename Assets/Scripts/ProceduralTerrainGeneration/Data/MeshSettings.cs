@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using ProceduralTerrainGeneration.Data;
 
 [CreateAssetMenu(menuName = "Terrain Data/Mesh Settings")]
 public class MeshSettings : UpdatableData {

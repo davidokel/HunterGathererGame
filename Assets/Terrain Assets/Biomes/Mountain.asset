@@ -41,3 +41,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   biomeLayers: []
   biomeColour: {r: 1, g: 0.8873018, b: 0, a: 0}
+  temperatureRange: {x: 0.35, y: 1}
+  precipitationRange: {x: 0.23, y: 1}
