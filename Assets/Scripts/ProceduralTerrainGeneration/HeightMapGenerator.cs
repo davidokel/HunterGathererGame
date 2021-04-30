@@ -30,8 +30,11 @@ namespace ProceduralTerrainGeneration
 		}
 
 		public static MapOutputContainer GenerateHeightMap(int width, int height, HeightMapSettings settings, Vector2 sampleCentre, BiomeMapSettings biomeMapSettings) {
-			float[,] values = Noise.GenerateNoiseMap (width, height, settings.noiseSettings, sampleCentre);
-			BiomeMap biomeMap = BiomeMapGenerator.GenerateBiomeMap (width, height, biomeMapSettings, sampleCentre);
+			int offset = biomeMapSettings.smoothingRadius * 2;
+			float[,] values = Noise.GenerateNoiseMap (width + offset, height + offset, settings.noiseSettings, sampleCentre);
+			BiomeMap biomeMap = BiomeMapGenerator.GenerateBiomeMap (width, height, biomeMapSettings, sampleCentre, values);
+			values = BiomeMapGenerator.removeOffset (values, biomeMapSettings.smoothingRadius);
+			
 			AnimationCurve heightCurve_threadsafe = new AnimationCurve(settings.heightCurve.keys);
 			AnimationCurve[] biomeCurves_threadsafe = new AnimationCurve[biomeMap.numBiomes];
 			for (int i = 0; i < biomeMap.numBiomes; i++) {
