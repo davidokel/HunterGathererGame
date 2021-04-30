@@ -4,11 +4,15 @@ namespace ProceduralTerrainGeneration.Data {
     [CreateAssetMenu(menuName = "Terrain Data/Biome Map Settings")]
     public class BiomeMapSettings : UpdatableData
     {
-        public NoiseSettings noiseSettings;
+        public TemperatureAndPrecipitationSettings temperatureSettings;
+        public TemperatureAndPrecipitationSettings precipitationSettings;
 
         [Range (0, 10)]
         public int smoothingRadius;
         public Biome[] Biomes;
+
+        [Range (0, 1)]
+        public float oceanHeight;
 
         public float minHeight {
             get {
@@ -34,16 +38,22 @@ namespace ProceduralTerrainGeneration.Data {
                 }
                 return height;
             }
-        } 
-    
+        }
+
 #if UNITY_EDITOR
         protected override void OnValidate() {
-            noiseSettings.ValidateValues ();
+            temperatureSettings.ValidateValues();
+            precipitationSettings.ValidateValues();
             base.OnValidate ();
         }
 #endif
     
     
+    }
+    [System.Serializable]
+    public class TemperatureAndPrecipitationSettings : NoiseSettings {
+        public Vector2 maxAndMinValues;
+        //public float valueOffset;
     }
 }
 

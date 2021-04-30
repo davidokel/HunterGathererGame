@@ -10,7 +10,7 @@ public class MapPreview : MonoBehaviour {
 	public MeshRenderer meshRenderer;
 
 
-	public enum DrawMode {NoiseMap, Mesh, FalloffMap, Biomes, BiomeMesh, BiomeMapHeightMult};
+	public enum DrawMode {NoiseMap, Mesh, FalloffMap, Biomes, BiomeMesh, BiomeMapHeightMult, Temperature, Precipitation};
 	public DrawMode drawMode;
 
 	public MeshSettings meshSettings;
@@ -56,13 +56,23 @@ public class MapPreview : MonoBehaviour {
 				DrawTexture(TextureGenerator.TextureFromFloatMap(falloffMap.values, falloffMap.minValue, falloffMap.maxValue, Color.black, Color.white));
 				break;
 			case DrawMode.Biomes:
-				DrawTexture(TextureGenerator.TextureFromIntMap(biomeMap.biomeMapIndexes, 0, biomeMap.numBiomes - 1, Color.green, Color.blue));
+				DrawTexture (TextureGenerator.TextureFromBiomeMap (biomeMap, biomeMapSettings));
 				break;
 			case DrawMode.BiomeMesh:
 				DrawMesh(MeshGenerator.GenerateTerrainMesh(biomeHeightMap.values,meshSettings,editorPreviewLOD));
 				break;
 			case DrawMode.BiomeMapHeightMult:
 				DrawTexture(TextureGenerator.TextureFromFloatMap(biomeMap.heightMultMat, biomeMapSettings.minHeight, biomeMapSettings.maxHeight, Color.black, Color.white));
+				break;
+			case DrawMode.Temperature:
+				float maxTemp = biomeMapSettings.temperatureSettings.maxAndMinValues.x;
+				float minTemp = biomeMapSettings.temperatureSettings.maxAndMinValues.y;
+				DrawTexture(TextureGenerator.TextureFromFloatMap(biomeMap.temperatureMap, minTemp, maxTemp, Color.blue, Color.red));
+				break;
+			case DrawMode.Precipitation:
+				float maxRain = biomeMapSettings.precipitationSettings.maxAndMinValues.x;
+				float minRain = biomeMapSettings.precipitationSettings.maxAndMinValues.y;
+				DrawTexture(TextureGenerator.TextureFromFloatMap(biomeMap.precipitationMap, minRain, maxRain, Color.black, Color.cyan));
 				break;
 		}
 	}

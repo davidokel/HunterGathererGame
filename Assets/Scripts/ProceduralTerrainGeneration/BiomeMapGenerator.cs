@@ -6,29 +6,53 @@ using UnityEngine;
 
 namespace ProceduralTerrainGeneration {
 	public static class BiomeMapGenerator {
-		public static BiomeMap GenerateBiomeMap(int width, int height, BiomeMapSettings settings, Vector2 sampleCentre) {
+		public static BiomeMap GenerateBiomeMap(int width, int height, BiomeMapSettings settings, Vector2 sampleCentre, float[,] heightMap) {
 			int offset = settings.smoothingRadius * 2;
-			
+			int newWidth = width + offset;
+			int newHeight = height + offset;
+
+			float[,] temperatureMap = Noise.GenerateNoiseMap (newWidth, newHeight, settings.temperatureSettings, sampleCentre);
+			float[,] precipitationMap = Noise.GenerateNoiseMap (newWidth, newHeight, settings.precipitationSettings, sampleCentre);
+
 			int[,] map = new int[width + offset, height + offset];
 
-			float[,] values = Noise.GenerateNoiseMap (width + offset, height + offset, settings.noiseSettings, sampleCentre);
-			
-			for (int x = 0; x < width + offset; x++) {
-				for (int y = 0; y < height + offset; y++) {
+			for (int x = 0; x < newWidth; x++) {
+				for (int y = 0; y < newHeight; y++) {
+
+					temperatureMap [x, y] = temperatureMap [x, y] * (settings.temperatureSettings.maxAndMinValues.x - settings.temperatureSettings.maxAndMinValues.y)  + settings.temperatureSettings.maxAndMinValues.y;
+					precipitationMap[x, y] = precipitationMap [x, y] * (settings.precipitationSettings.maxAndMinValues.x - settings.precipitationSettings.maxAndMinValues.y)  + settings.precipitationSettings.maxAndMinValues.y;
+
+					bool isOceanHeight = heightMap [x, y] < settings.oceanHeight;
+
 					for (int biomeIndex = 0; biomeIndex < settings.Biomes.Length; biomeIndex++) {
-						if (values [x, y] <= settings.Biomes [biomeIndex].startValue) {
+						if (isOceanHeight) {
+							if (settings.Biomes[biomeIndex].isOcean) {
+								map [x, y] = biomeIndex;
+								break;
+							}
+						} else if (IsInRange(settings.Biomes[biomeIndex],temperatureMap[x,y],precipitationMap[x,y])){
 							map [x, y] = biomeIndex;
 							break;
 						}
+						
 					}
 				}
 			}
 		
 			float[,] heightMult = removeOffset (BlurHeightMultipliers (settings, map), settings.smoothingRadius);
 			map = removeOffset (map, settings.smoothingRadius);
+			
 			//TODO change blur to HLSL
-			return new BiomeMap (map, settings.Biomes.Length, heightMult);
+			return new BiomeMap (map, settings.Biomes.Length, heightMult, temperatureMap, precipitationMap);
 		}
+
+		public static bool IsInRange(Biome biome, float tempValue, float precipValue) {
+			bool temp = biome.maxAndMinTemperature.x >= tempValue && biome.maxAndMinTemperature.y <= tempValue;
+			bool rain = biome.maxAndMinPrecipitation.x >= precipValue && biome.maxAndMinPrecipitation.y <= precipValue;
+
+			return temp && rain;
+		}
+		
 
 		public static float[,] BlurHeightMultipliers(BiomeMapSettings settings, int[,] indexes) {
 		
@@ -77,7 +101,7 @@ namespace ProceduralTerrainGeneration {
 			return values;
 		}
 
-		static T[,] removeOffset<T> (T[,] values, int offset) {
+		public static T[,] removeOffset<T> (T[,] values, int offset) {
 			int width = values.GetLength (0) - offset * 2;
 			int height = values.GetLength (1) - offset * 2;
 			T[,] output = new T[width, height];
@@ -95,11 +119,15 @@ namespace ProceduralTerrainGeneration {
 		public readonly int[,] biomeMapIndexes;
 		public readonly int numBiomes;
 		public readonly float[,] heightMultMat;
+		public readonly float[,] temperatureMap;
+		public readonly float[,] precipitationMap;
 
-		public BiomeMap(int[,] biomeMapIndexes, int numBiomes, float[,] heightMultMat) {
+		public BiomeMap(int[,] biomeMapIndexes, int numBiomes, float[,] heightMultMat, float[,] temperatureMap, float[,] precipitationMap) {
 			this.biomeMapIndexes = biomeMapIndexes;
 			this.numBiomes = numBiomes;
 			this.heightMultMat = heightMultMat;
+			this.temperatureMap = temperatureMap;
+			this.precipitationMap = precipitationMap;
 		}
 
 	}

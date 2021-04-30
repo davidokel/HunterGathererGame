@@ -13,16 +13,29 @@ MonoBehaviour:
   m_Name: Default Biome Map
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  noiseSettings:
-    normalizeMode: 1
-    scale: 44.5
+  temperatureSettings:
+    normalizeMode: 0
+    scale: 50
     octaves: 6
-    persistance: 0.269
-    lacunarity: 1.86
-    seed: 391
-    offset: {x: 44.3, y: 0}
-  smoothingRadius: 7
+    persistance: 0.24
+    lacunarity: 2.5
+    seed: 1
+    offset: {x: -4.18, y: 1}
+    maxAndMinValues: {x: 50, y: -10}
+  precipitationSettings:
+    normalizeMode: 0
+    scale: 50
+    octaves: 6
+    persistance: 0.288
+    lacunarity: 3.35
+    seed: 0
+    offset: {x: 0, y: 0}
+    maxAndMinValues: {x: 100, y: 0}
+  smoothingRadius: 6
   Biomes:
-  - {fileID: 11400000, guid: 8341c6f076907a643a251c3c9382ac7f, type: 2}
-  - {fileID: 11400000, guid: c3687e591a5079c459bbb5809945f91e, type: 2}
-  - {fileID: 11400000, guid: 0068e53eaa6e7d44fa3f713f0ba3372f, type: 2}
+  - {fileID: 11400000, guid: 9e5c0f0be91a98c4ebb9ac2265fcb7d1, type: 2}
+  - {fileID: 11400000, guid: f41200e71a1a79143947bb7d530379b7, type: 2}
+  - {fileID: 11400000, guid: d90c480244ffe6a4d80fc9106f4c25da, type: 2}
+  - {fileID: 11400000, guid: db776076e14d64f44b56ddb8e7773f5b, type: 2}
+  - {fileID: 11400000, guid: e89bd63c97ea4874289766259c7982c0, type: 2}
+  oceanHeight: 0.3

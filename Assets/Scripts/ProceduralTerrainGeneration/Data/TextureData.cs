@@ -30,12 +30,14 @@ namespace ProceduralTerrainGeneration.Data {
 		}
 
 		public void ApplyToBiomeMaterial(Material material, BiomeMapSettings settings, MeshSettings meshSettings, BiomeMap map, Vector3 centre) {
+			
 			material.SetColorArray("biomeColours", settings.Biomes.Select(x => x.biomeColour).ToArray());
 			material.SetInt("numBiomes",settings.Biomes.Length);
 		
 			int size = map.biomeMapIndexes.GetLength (0);
 			float worldSize = meshSettings.meshWorldSize;
 			float ratio = worldSize / size;
+			
 			material.SetFloat("worldSizeRatio",ratio);
 			material.SetFloatArray("biomeOrigin",new []{centre.x - worldSize/2, centre.z - worldSize/2});
 			material.SetInt("mapSize",size);
