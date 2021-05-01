@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoUpdate: 1
   temperatureSettings:
-    normalizeMode: 0
+    normalizeMode: 1
     scale: 50
     octaves: 6
     persistance: 0.24
@@ -23,7 +23,7 @@ MonoBehaviour:
     offset: {x: -4.18, y: 1}
     maxAndMinValues: {x: 50, y: -10}
   precipitationSettings:
-    normalizeMode: 0
+    normalizeMode: 1
     scale: 50
     octaves: 6
     persistance: 0.288
@@ -33,9 +33,9 @@ MonoBehaviour:
     maxAndMinValues: {x: 100, y: 0}
   smoothingRadius: 6
   Biomes:
-  - {fileID: 11400000, guid: 9e5c0f0be91a98c4ebb9ac2265fcb7d1, type: 2}
-  - {fileID: 11400000, guid: f41200e71a1a79143947bb7d530379b7, type: 2}
-  - {fileID: 11400000, guid: d90c480244ffe6a4d80fc9106f4c25da, type: 2}
-  - {fileID: 11400000, guid: db776076e14d64f44b56ddb8e7773f5b, type: 2}
-  - {fileID: 11400000, guid: e89bd63c97ea4874289766259c7982c0, type: 2}
-  oceanHeight: 0.3
+  - {fileID: 11400000, guid: 3350b447629fe824aada2131977d3887, type: 2}
+  - {fileID: 11400000, guid: 6f43d655a4876764086180406ca8f82e, type: 2}
+  - {fileID: 11400000, guid: efb2c54ee426c0b49982f138b99da5f9, type: 2}
+  - {fileID: 11400000, guid: fc4db747e09f37b40b0813f3a7482637, type: 2}
+  - {fileID: 11400000, guid: 85b7595644fee04409331dc47b0db9ea, type: 2}
+  oceanHeight: 0.166
