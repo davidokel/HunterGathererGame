@@ -29,8 +29,8 @@ public class MapPreview : MonoBehaviour {
 	private BiomeMap biomeMap;
 
 	public void DrawMapInEditor() {
-		float minHeight = (drawMode != DrawMode.BiomeMesh) ? heightMapSettings.minHeight : biomeMapSettings.minHeight * heightMapSettings.minHeight;
-		float maxHeight = (drawMode != DrawMode.BiomeMesh) ? heightMapSettings.maxHeight : biomeMapSettings.maxHeight * heightMapSettings.maxHeight;
+		float minHeight = (drawMode.Equals(DrawMode.BiomeMesh)) ?  biomeMapSettings.minHeight * heightMapSettings.minHeight : heightMapSettings.minHeight;
+		float maxHeight = (drawMode.Equals(DrawMode.BiomeMesh)) ?  biomeMapSettings.maxHeight * heightMapSettings.maxHeight : heightMapSettings.maxHeight;
 
 		HeightMap heightMap = HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero).heightMap;
 		MapOutputContainer mapOutputContainer = HeightMapGenerator.GenerateHeightMap (meshSettings.numVertsPerLine, meshSettings.numVertsPerLine, heightMapSettings, Vector2.zero, biomeMapSettings);

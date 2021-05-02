@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7238f0098b9ca374d87938a22b0396b1, type: 3}
   m_Name: Ocean
   m_EditorClassIdentifier: 
-  autoUpdate: 0
+  autoUpdate: 1
   heightMult: 1
   heightCurve:
     serializedVersion: 2

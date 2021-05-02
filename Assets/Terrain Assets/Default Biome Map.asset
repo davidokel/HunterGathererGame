@@ -17,7 +17,7 @@ MonoBehaviour:
     normalizeMode: 1
     scale: 50
     octaves: 6
-    persistance: 0.24
+    persistance: 0.325
     lacunarity: 2.5
     seed: 1
     offset: {x: -4.18, y: 1}
@@ -27,7 +27,7 @@ MonoBehaviour:
     scale: 50
     octaves: 6
     persistance: 0.288
-    lacunarity: 3.35
+    lacunarity: 3.5
     seed: 0
     offset: {x: 0, y: 0}
     maxAndMinValues: {x: 100, y: 0}
@@ -38,4 +38,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: efb2c54ee426c0b49982f138b99da5f9, type: 2}
   - {fileID: 11400000, guid: fc4db747e09f37b40b0813f3a7482637, type: 2}
   - {fileID: 11400000, guid: 85b7595644fee04409331dc47b0db9ea, type: 2}
-  oceanHeight: 0.166
+  oceanHeight: 0.198
