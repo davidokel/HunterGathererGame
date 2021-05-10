@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using ProceduralObjectPlacement.Data;
+using ProceduralTerrainGeneration;
+using ProceduralTerrainGeneration.Data;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,7 +15,13 @@ namespace ProceduralObjectPlacement {
 		private Vector2 areaStart;
 		private Vector2 areaSize;
 
+		private TerrainGenerator _terrainGenerator;
+		private Biome[] _biomes;
+
 		private void Start() {
+			_terrainGenerator = (TerrainGenerator) transform.GetComponent(typeof(TerrainGenerator));
+			_biomes = _terrainGenerator.biomeMapSettings.Biomes;
+			
 			var bounds = GetComponent<Collider> ().bounds;
 			var position = transform.position;
 			float xCoord = position.x - bounds.size.x / 2;
@@ -49,7 +57,7 @@ namespace ProceduralObjectPlacement {
 			foreach (var point in points) {
 				Ray ray = new Ray (PointAtHeight(point, transform.position.y + rayCastHeight), Vector3.down);
 				RaycastHit hitInfo;
-				if (Physics.Raycast(ray, out hitInfo, rayCastHeight * 2, groundMask.value)) {
+				if (Physics.Raycast(ray, out hitInfo, rayCastHeight * 2, groundMask.value) && BiomeAllowsSpawn(point, spawnable.tag)) {
 					float worldHeight = hitInfo.point.y;
 					GameObject newObject = Instantiate (spawnable.GetRandomGameObject (), transform, true);
 					Vector3 rotation = new Vector3 (Random.Range (0, 5f), Random.Range (0, 360f), Random.Range (0, 5f));
@@ -58,6 +66,13 @@ namespace ProceduralObjectPlacement {
 				}
 			}
 			
+		}
+
+		public bool BiomeAllowsSpawn(Vector2 point, string resourceTag) {
+			TerrainChunk chunk = _terrainGenerator.GetChunkFromDictionary (point);
+			int biomeIndex = chunk.GetBiomeIndex (point);
+
+			return _biomes [biomeIndex].resourceTagsList.Contains (resourceTag);
 		}
 
 		public Vector3 PointAtHeight(Vector2 vector, float height) {

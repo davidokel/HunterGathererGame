@@ -1,4 +1,5 @@
-﻿using ProceduralTerrainGeneration;
+﻿using General;
+using ProceduralTerrainGeneration;
 using ProceduralTerrainGeneration.Data;
 using UnityEngine;
 
@@ -54,6 +55,7 @@ public class TerrainChunk {
 
 		meshObject.transform.position = new Vector3(position.x,0,position.y);
 		meshObject.transform.parent = parent;
+		meshObject.layer = 3;
 		SetVisible(false);
 
 		lodMeshes = new LODMesh[detailLevels.Length];
@@ -163,6 +165,12 @@ public class TerrainChunk {
 		return meshObject.activeSelf;
 	}
 
+	public int GetBiomeIndex(Vector2 worldPosition) {
+		int biomeX = Mathf.CeilToInt(sampleCentre.x - meshSettings.meshWorldSize / (meshSettings.meshScale * 2));	
+		int biomeY = Mathf.CeilToInt(sampleCentre.y - meshSettings.meshWorldSize / (meshSettings.meshScale * 2));
+
+		return biomeMap.biomeMapIndexes [biomeX, biomeY];
+	}
 }
 
 class LODMesh {

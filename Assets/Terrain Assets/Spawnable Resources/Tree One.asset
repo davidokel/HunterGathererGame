@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15a039fec60044c4c8b8a9621d606461, type: 3}
   m_Name: Tree One
   m_EditorClassIdentifier: 
-  isClusterSpawned: 0
+  isClusterSpawned: 1
   distributionSettings:
     minimumRadius: 30.66
     rejectionValue: 10

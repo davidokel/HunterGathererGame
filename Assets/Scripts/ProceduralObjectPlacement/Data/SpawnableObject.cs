@@ -3,6 +3,7 @@ using UnityEngine;
 namespace ProceduralObjectPlacement.Data {
 	[CreateAssetMenu(menuName = "World Generation/Spawnable Resource")]
 	public class SpawnableObject : ScriptableObject {
+		public string tag;
 		public bool isClusterSpawned;
 		public PoissonDistributionSettings distributionSettings;
 		public ClusterSettings clusterSettings;

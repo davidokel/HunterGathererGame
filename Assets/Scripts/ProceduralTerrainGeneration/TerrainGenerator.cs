@@ -89,6 +89,12 @@ namespace ProceduralTerrainGeneration
 			}
 		}
 
+		public TerrainChunk GetChunkFromDictionary(Vector2 worldPosition) {
+			int chunkCoordinatesX = Mathf.RoundToInt (worldPosition.x / meshWorldSize);
+			int chunkCoordinatesY = Mathf.RoundToInt (worldPosition.y / meshWorldSize);
+			return terrainChunkDictionary [new Vector2 (chunkCoordinatesX, chunkCoordinatesY)];
+		}
+
 		void OnTerrainChunkVisibilityChanged(TerrainChunk chunk, bool isVisible) {
 			if (isVisible) {
 				visibleTerrainChunks.Add (chunk);

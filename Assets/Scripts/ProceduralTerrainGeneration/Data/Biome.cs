@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace ProceduralTerrainGeneration.Data {
 	[CreateAssetMenu(menuName = "World Generation/Biome")]
@@ -7,6 +9,8 @@ namespace ProceduralTerrainGeneration.Data {
 		public AnimationCurve heightCurve;
 		public TextureData.Layer[] biomeLayers;
 		public Color biomeColour;
+
+		public List<string> resourceTagsList;
 
 		public bool isOcean;
 
